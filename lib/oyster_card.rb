@@ -11,7 +11,6 @@ class OysterCard
 
   def initialize( journey_class=Journey )
     @balance = 0
-    @entry_station =  nil
     @journeys = []
     @journey_class = journey_class
     @current_journey = journey_class.new
@@ -25,19 +24,20 @@ class OysterCard
 
   def touch_in(station)
     raise "You need a minimum of £1" if @balance < MINIMUM
-    @entry_station = station
     @current_journey.start(station)
   end
 
   def touch_out(station)
-    @exit_station = station
-    store_trips
-    @entry_station = nil
     @current_journey.stop(station)
   end
 
   def deduct_fare
     @current_journey.complete? ? @balance -= FARE : @balance -= PENALTY_FARE
+    store_trips
+  end
+
+  def journey_list
+    "#{@journeys[0].entry_station.name} - #{@journeys[0].exit_station.name}"
   end
 
   private

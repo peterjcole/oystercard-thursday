@@ -8,6 +8,9 @@ describe OysterCard do
   let(:entry_station) { double(:station, :name => "Barbican") }
   let(:exit_station) { double(:station, :name => "Camden Town") }
   let(:oyster_card) { OysterCard.new(journey_class) }
+  let(:journey) { double(:journey, :complete? => true, :entry_station => entry_station, :exit_station => exit_station).as_null_object }
+  let(:journey_class) { double(:journey_class, :new => journey )}
+
 
   it 'can get the current balance on the oyster card' do
     oyster_card.top_up(10)
@@ -39,26 +42,6 @@ describe OysterCard do
   #   expect{ oyster_card.touch_out(2) }.to change { oyster_card.balance }.by(-2)
   # end
 
-  it 'remembers the entry station after touch in' do
-    oyster_card.top_up(10)
-    oyster_card.touch_in(entry_station)
-    expect(oyster_card.entry_station).to eq(entry_station)
-  end
-
-  it 'forgets the entry station on touch out' do
-    oyster_card.top_up(10)
-    oyster_card.touch_in(entry_station)
-    oyster_card.touch_out(2)
-    expect(oyster_card.entry_station).to eq(nil)
-  end
-
-  it 'remembers the exit station on touch out' do
-    oyster_card.top_up(10)
-    oyster_card.touch_in(entry_station)
-    oyster_card.touch_out(exit_station)
-    expect(oyster_card.exit_station).to eq(exit_station)
-  end
-
   it 'has an empty list of journeys by default' do
     expect(oyster_card.journeys).to eq([])
   end
@@ -79,12 +62,10 @@ describe OysterCard do
     oyster_card.top_up(10)
     oyster_card.touch_in(entry_station)
     oyster_card.touch_out(exit_station)
-    expect(oyster_card.journeys).to eq()
+    oyster_card.deduct_fare
+    expect(oyster_card.journey_list).to eq("Barbican - Camden Town")
   end
-
-  let(:journey) { double(:journey, :complete? => true).as_null_object }
-  let(:journey_class) { double(:journey_class, :new => journey )}
-
+  
   context '#fare' do
     it 'deducts the minimum fare when journey is complete' do
       oyster_card.top_up(10)
