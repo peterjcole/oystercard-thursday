@@ -1,3 +1,6 @@
+#!/bin/env ruby
+# encoding: utf-8
+
 class OysterCard
 
   attr_reader :entry_station, :exit_station, :journeys, :balance

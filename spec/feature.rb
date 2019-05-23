@@ -19,5 +19,8 @@ journey.end(exit_station)
 
 
 journey.is_complete?
+# true
 
-journey.fare
+card.fare
+# minimum fare
+

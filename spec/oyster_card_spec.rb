@@ -1,3 +1,6 @@
+#!/bin/env ruby
+# encoding: utf-8
+
 require './lib/oyster_card'
 
 describe OysterCard do
@@ -64,6 +67,19 @@ describe OysterCard do
     oyster_card.touch_in(entry_station)
     oyster_card.touch_out(2, exit_station)
     expect(oyster_card.journeys).to eq([{:entry_station => entry_station, :exit_station => exit_station}])
+  end
+
+  context '#fare' do
+    # it 'deducts the minimum fare when journey is complete' do
+    #   pending()
+    #   # journey.start(entry_station)
+    #   # journey.stop(exit_station)
+    #   # expect(journey.fare).to be
+    # end
+
+    # it 'deducts the penalty fare when journey is incomplete' do
+    #   pending()
+    # end
   end
 
 end

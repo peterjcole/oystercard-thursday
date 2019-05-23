@@ -5,6 +5,7 @@ describe Journey do
   let(:entry_station) { double(:station) }
   let(:exit_station) { double(:station) }
 
+
   it 'can start' do
     journey.start(entry_station)
     expect(journey.entry_station).to be entry_station
@@ -20,4 +21,12 @@ describe Journey do
     journey.stop(exit_station)
     expect(journey).to be_complete
   end
+
+  it 'is not complete after starting but not stopping' do
+    journey.start(entry_station)
+    expect(journey).not_to be_complete
+  end
+
+
+
 end
